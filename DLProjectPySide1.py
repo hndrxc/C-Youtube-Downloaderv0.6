@@ -87,7 +87,8 @@ class YouTubeDownloaderFrame(QMainWindow):
     def download_audio(self, url, download_dir):
         try:
             ydl_opt = self.selected_format()
-            ydl_opt['paths']['home'] = getattr(self, 'selected_directory', '')
+            # ydl_opt['paths']['home'] = getattr(self, 'selected_directory', '')  below has identical functionality
+            ydl_opt['paths']['home'] = download_dir
             # print(ydl_opt)
             with yt_dlp.YoutubeDL(ydl_opt) as ydl:
                 ydl.download([url])

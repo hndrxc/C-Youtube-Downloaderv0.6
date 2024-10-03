@@ -1,4 +1,4 @@
-from DLProjectPySide import YouTubeDownloaderFrame
+# from DLProjectPySide import YouTubeDownloaderFrame
 def create_opts_list(self):
     download_dir1 = str
     self.ydl_opts_list = [
