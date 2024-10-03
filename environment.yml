@@ -1,0 +1,16 @@
+name: Downloader_Project
+
+dependencies:
+  - python=3.12.4
+  - numpy
+  - toolz
+  - matplotlib
+  - dill
+  - pandas
+  - partd
+  - bokeh
+  - pip
+  - pip:
+    - yt_dlp
+    - pyside6
+    - ffmpeg
