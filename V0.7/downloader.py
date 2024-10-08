@@ -1,5 +1,3 @@
-from idlelib.pathbrowser import PathBrowser
-
 from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QComboBox, QTableWidget, QTableWidgetItem
 from PySide6.QtGui import QIcon
 from PySide6 import QtCore
@@ -15,6 +13,8 @@ class YouTubeDownloaderFrame(QMainWindow):
     def __init__(self):
         super(YouTubeDownloaderFrame, self).__init__()
         # Main widget
+        self.selected_directory = None
+        self.thumbnail_path = None
         widget = QWidget()
         self.setCentralWidget(widget)
 
@@ -48,7 +48,7 @@ class YouTubeDownloaderFrame(QMainWindow):
         vbox.addWidget(self.status_text)
 
         # Downloads display table
-        self.dl_table = QTableWidget(0, 1, self)
+        self.dl_table = QTableWidget(0, 3, self)
         self.dl_table.resizeColumnsToContents()
         self.dl_table.horizontalHeader().setStretchLastSection(True)
         self.dl_table.verticalHeader().setStretchLastSection(True)
@@ -101,18 +101,23 @@ class YouTubeDownloaderFrame(QMainWindow):
                 print(thumbnail_url)
                 ydl.download([url])
                 self.thumbnail_path = download_thumbnail(thumbnail_url, video_title, download_dir)
-                thumbnail_path = self.thumbnail_path
-                self.previous_downloads(video_title)
+                
+                self.previous_downloads(video_title,download_dir)
 
             self.status_text.setText("Download complete!")
         except Exception as e:
             self.status_text.setText(f"Error: {str(e)}")
 
-    def previous_downloads(self, video_title):
+    def previous_downloads(self, video_title,download_dir):
         row_position = self.dl_table.rowCount()
         self.dl_table.insertRow(row_position)
-        new_item = QTableWidgetItem(video_title)
+        title_item = QTableWidgetItem(video_title)
         icon = QIcon(getattr(self, 'thumbnail_path'))
-        new_item.setIcon(icon)
-        self.dl_table.setItem(row_position, 0, new_item)
+        title_item.setIcon(icon)
+        path_item = QTableWidgetItem(download_dir)
+        format_item = QTableWidgetItem(self.combo_box.currentText())
+        self.dl_table.setItem(row_position, 0, title_item)
+        self.dl_table.setItem(row_position, 1, format_item)
+        self.dl_table.setItem(row_position, 2, path_item)
+        self.dl_table.resizeColumnsToContents()
 
